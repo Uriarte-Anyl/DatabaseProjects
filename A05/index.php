@@ -1,8 +1,8 @@
 <?php
 include('connect.php');
 
-$sql = "SELECT *FROM usersinfo";
-$result = $conn->query($sql);
+$query = "SELECT * FROM usersinfo";
+$result = executeQuery($query);
 ?>
 
 <!doctype html>
@@ -80,13 +80,12 @@ $result = $conn->query($sql);
     border: none;
   }
 
-  .btnShowInfo {
+  .btn-info {
     border-radius: 10px;
     font-family: 'Quicksand', sans-serif;
     font-size: 1.25rem;
     margin: 20px 0px 10px 0px;
     border: none;
-    background-color: #C0C0C0;
   }
 
   .btnShowFriends {
@@ -106,6 +105,13 @@ $result = $conn->query($sql);
     display: flex;
     align-items: center;
     gap: .3125rem;
+  }
+
+  .btn-primary {
+    width: 4.6875rem;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: bolder;
   }
 </style>
 
@@ -130,7 +136,7 @@ $result = $conn->query($sql);
   <div class="container">
     <div class="row">
       <div class="col d-flex justify-content-center">
-        <button class="btnShowInfo" id="btnShowInfo" onclick="btnExpand()">Users Information</button>
+        <button class="btn btn-info" id="btnShowInfo" onclick="btnExpand()">Users Information</button>
       </div>
     </div>
   </div>
@@ -138,22 +144,23 @@ $result = $conn->query($sql);
   <div class="container" id="friendRequestContent" style="display: none;">
     <div class="row">
       <?php
-      if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-          echo '
-              <div class="col-12 col-md-6 col-lg-3">
-                  <div class="card">
-                      <img class="card-img-top">
-                      <div class="card-body">
-                          <div class="fullName">
-                              <h5 class="card-firstName">' . htmlspecialchars($row["firstName"]) . '</h5>
-                              <h5 class="card-lastName">' . htmlspecialchars($row["lastName"]) . '</h5>
-                          </div>
-                          <p class="card-sex">Sex: ' . htmlspecialchars($row["sex"]) . '</p>
-                          <p class="card-birthDay">Birthday: ' . htmlspecialchars($row["birthDay"]) . '</p>
-                      </div>
-                  </div>
-              </div>';
+      if (mysqli_num_rows($result) > 0) {
+        while ($userInformation = mysqli_fetch_assoc($result)) {
+          ?>
+          <div class="col-12 col-md-6 col-lg-3">
+            <div class="card">
+              <img class="card-img-top">
+              <div class="card-body">
+                <div class="fullName">
+                  <h5 class="card-firstName"><?php echo $userInformation['firstName'] ?></h5>
+                  <h5 class="card-lastName"><?php echo $userInformation['lastName'] ?></h5>
+                </div>
+                <p class="card-sex"><?php echo $userInformation['birthDay'] ?></p>
+                <p class="card-birthDay"><?php echo $userInformation['sex'] ?></p>
+              </div>
+            </div>
+          </div>
+          <?php
         }
       }
       ?>
@@ -167,6 +174,8 @@ $result = $conn->query($sql);
 
   <script>
     var bgColorMode = "light";
+    var display = "none";
+
     function changeBgColorMode() {
       if (bgColorMode == "light") {
         document.getElementById("body").setAttribute("data-bs-theme", "dark");
@@ -178,8 +187,6 @@ $result = $conn->query($sql);
         bgColorMode = "light";
       }
     }
-
-    var display = "none";
 
     function btnExpand() {
       var fRContent = document.getElementById("friendRequestContent");
@@ -195,6 +202,7 @@ $result = $conn->query($sql);
         btnShowInfo.innerHTML = "Users Information";
       }
     }
+
   </script>
 </body>
 
