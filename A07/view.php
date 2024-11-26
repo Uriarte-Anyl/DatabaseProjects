@@ -64,8 +64,6 @@ $result = executeQuery($query);
                             </div>
 
                             <button type="submit" class="btn btn-primary mt-3" name="btnEdit">Save</button>
-                            <a href=""><button type="button" class="btn btn-secondary
-                             mt-3">Back</button></a>
 
                         </form>
                     </div>
