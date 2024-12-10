@@ -97,6 +97,7 @@ $aircraftTypeResults = executeQuery($aircraftTypeQuery);
 
   .table {
     white-space: nowrap;
+    font-size: 13.33px;
   }
 
   @media (max-width: 768px) {
